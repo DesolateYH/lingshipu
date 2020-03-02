@@ -3,10 +3,12 @@ package com.example.demo.Logic.item;
 import com.example.demo.db.DbManage;
 import com.example.demo.entity.item.ItemDetailed;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+@Service
 public class LItemDetailed {
     //查询物品详情
     public Map<String, Object> Litemdetailed(String item_id) throws Exception {
@@ -88,6 +90,23 @@ public class LItemDetailed {
         Date dt1 = rightNow.getTime();
         String reStr = sdf.format(dt1);
         return reStr;
+    }
+
+    /**
+     * 删除商品
+     * @param item_id 商品id
+     * @return 删除数量
+     */
+    public int deleteItemByItemId(int item_id){
+        String sqlTxt = "DELETE FROM vx_homepage_more where item_id = " + item_id;
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        DbManage db = new DbManage();
+        try {
+            jdbcTemplate.setDataSource(db.getDataSource());
+        }catch (Exception e){
+            return 0;
+        }
+        return jdbcTemplate.update(sqlTxt);
     }
 
 }

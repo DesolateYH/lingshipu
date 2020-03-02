@@ -14,4 +14,12 @@ import java.util.List;
  */
 public interface ItemHomePageMoreDao extends JpaRepository<ItemHomePageMore,Integer> {
     ItemHomePageMore findAllByItemId(int itemId);
+
+    /**
+     * 获取商品信息
+     * @param shopId 寝室id
+     * @return 所有商品信息
+     */
+    List<ItemHomePageMore> findByParentShopId(int shopId);
+
 }

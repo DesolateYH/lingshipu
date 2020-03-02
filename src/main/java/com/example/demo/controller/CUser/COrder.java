@@ -3,14 +3,12 @@ package com.example.demo.controller.CUser;
 import com.example.demo.Logic.user.LOrder;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
+@CrossOrigin
 public class COrder {
     @Autowired
     private LOrder lOrder;

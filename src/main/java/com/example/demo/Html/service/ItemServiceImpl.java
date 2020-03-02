@@ -42,5 +42,14 @@ public class ItemServiceImpl {
         }
         return list;
     }
+
+    /**
+     * 获取店铺内商品列表
+     * @param shop_id 店铺id
+     * @return 商品列表
+     */
+    public List<ItemHomePageMore> findByItemInfoByShopId(int shop_id){
+        return itemHomePageMoreDao.findByParentShopId(shop_id);
+    }
 }
 

@@ -4,14 +4,13 @@ import com.example.demo.Html.model.Item;
 import com.example.demo.Html.service.ItemServiceImpl;
 import com.example.demo.Logic.Community.LUserGetInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@CrossOrigin
 public class CUserGetInfo {
     @Autowired
     private LUserGetInfo lUserGetInfo;
@@ -25,4 +24,5 @@ public class CUserGetInfo {
     public Map<String, Object> UserGetInfoforCommunityDetailed(String property_info_id){
         return lUserGetInfo.UserGetInfoforCommunityDetailed(property_info_id);
     }
+
 }

@@ -1,12 +1,14 @@
 package com.example.demo.controller.item;
 
 import com.example.demo.Logic.item.LItemDetailed;;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 @RestController
+@CrossOrigin
 public class CItemDetailed {
 
     //查询物品详情
