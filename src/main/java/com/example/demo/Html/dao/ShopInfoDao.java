@@ -3,8 +3,6 @@ package com.example.demo.Html.dao;
 import com.example.demo.Html.model.ShopInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
-
 /**
  * @program: lingshipu
  * @description: 店铺信息接口层
@@ -26,4 +24,12 @@ public interface ShopInfoDao extends JpaRepository<ShopInfo,Integer> {
      * @return 找到的记录条数
      */
     ShopInfo findByShopAddress(String shopAddress);
+
+
+    /**
+     * 删除寝室信息
+     * @param shopId 寝室id
+     */
+    void deleteByShopId(int shopId);
+
 }

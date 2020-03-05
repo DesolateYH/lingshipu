@@ -15,9 +15,13 @@ import java.io.Serializable;
 @Table(name="vx_homepage_more")
 public class ItemHomePageMore{
     /**
-     * 商品编号
+     * 主键，无意义
      */
     @Id
+    int uuid;
+    /**
+     * 商品编号
+     */
     private int itemId;
     /**
      * 商品名称
@@ -30,7 +34,7 @@ public class ItemHomePageMore{
     /**
      * 商品图片
      */
-    String item_pic_url;
+    String itemPicUrl;
     /**
      * 父类店铺id
      */

@@ -5,6 +5,7 @@ import com.example.demo.Html.model.ShopInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -21,6 +22,7 @@ public class ShopInfoServiceImpl {
     public ShopInfoServiceImpl(ShopInfoDao shopInfoDao) {
         this.shopInfoDao = shopInfoDao;
     }
+
 
     /**
      * 获取所有寝室信息
@@ -47,6 +49,22 @@ public class ShopInfoServiceImpl {
      */
     public boolean findExistShopByShopAddress(String shopAddress) {
         return !(shopInfoDao.findByShopAddress(shopAddress) == null);
+    }
+
+    /**
+     * 删除寝室信息
+     *
+     * @param shopId 寝室id
+     * @return 是否删除成功
+     */
+    public boolean deleteShopInfoByShopId(int shopId) {
+        try {
+            shopInfoDao.deleteByShopId(shopId);
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error:" + e.getMessage());
+            return false;
+        }
     }
 
 }

@@ -22,4 +22,17 @@ public interface ItemHomePageMoreDao extends JpaRepository<ItemHomePageMore,Inte
      */
     List<ItemHomePageMore> findByParentShopId(int shopId);
 
+    /**
+     * 删除相应商品
+     * @param i 寝室id
+     */
+    void deleteByParentShopId(int i);
+
+    /**
+     * 获取商品信息
+     * @param i 商品id,寝室id
+     * @return 商品信息对象
+     */
+    ItemHomePageMore findByItemIdAndParentShopId(int i,int p);
+
 }
