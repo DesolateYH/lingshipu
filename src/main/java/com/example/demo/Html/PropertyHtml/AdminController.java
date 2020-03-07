@@ -87,16 +87,24 @@ public class AdminController {
      * @return 商品列表
      */
     @RequestMapping(value = "/findItemInfoByShopId")
-    public Map<String, Object> findItemInfoByShopId(Integer shop_id) {
+    public Map<String, Object> findItemInfoByShopId(HttpServletRequest httpServletRequest, Integer shop_id) {
+        HttpSession session = httpServletRequest.getSession();
         Map<String, Object> map = new HashMap<>();
         if (shop_id == null) {
             map.put("500", "参数有误");
             return map;
         }
-        map.put("itemInfo", itemService.findByItemInfoByShopId(shop_id));
-        String shop_address = shopInfoService.findShopInfoByShopId(shop_id).getShopAddress();
-        map.put("userInfo", userInfoService.findUserInfoByUserAddress(shop_address));
-        return map;
+        try {
+            String user_id = session.getAttribute("user_id").toString();
+            map.put("itemInfo", itemService.findByItemInfoByShopId(shop_id));
+            String shop_address = shopInfoService.findShopInfoByShopId(shop_id).getShopAddress();
+            map.put("userInfo", userInfoService.findUserInfoByUserAddress(shop_address));
+            return map;
+        } catch (Exception e) {
+            map.put("500", "发生错误");
+            return map;
+        }
+
     }
 
     /**
@@ -117,6 +125,7 @@ public class AdminController {
             map.put("500", "参数有误");
             return map;
         }
+
 
         ShopInfo shopInfo = new ShopInfo();
         shopInfo.setShopAddress(shop_address);
@@ -211,6 +220,36 @@ public class AdminController {
     }
 
     /**
+     * 删除寝室内的商品
+     *
+     * @param httpServletRequest
+     * @param shop_id            寝室id
+     * @param item_id            商品id
+     * @return
+     */
+    @RequestMapping(value = "/deleteItemFromShop")
+    public Map<String, Object> deleteItemFromShop(HttpServletRequest httpServletRequest, Integer shop_id, Integer item_id) {
+        HttpSession session = httpServletRequest.getSession();
+        Map<String, Object> map = new HashMap<>();
+        if (shop_id == null || item_id == null) {
+            map.put("500", "参数有误");
+            return map;
+        }
+        try {
+            String user_id = session.getAttribute("user_id").toString();
+            if (itemService.deleteItemFromShop(shop_id, item_id)) {
+                map.put("200", "200");
+            } else {
+                map.put("500", "删除失败");
+            }
+            return map;
+        } catch (Exception e) {
+            map.put("500", "请先登录");
+            return map;
+        }
+    }
+
+    /**
      * 管理员登陆
      *
      * @param user_id  用户名
@@ -266,16 +305,58 @@ public class AdminController {
                 adminInfoModel.setPermissions(permissions);
                 adminInfoDao.save(adminInfoModel);
                 map.put("200", "添加成功");
-                return map;
             } else {
                 map.put("500", "权限不足");
             }
+            return map;
         } catch (Exception e) {
             map.put("500", "请先登录");
+            return map;
         }
-        map.put("500", "权限不足");
-        return map;
+    }
 
+    /**
+     * 拦截器重定向
+     */
+    @RequestMapping(value = "/adminLoginError")
+    public Map<String, Object> adminLoginError() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("500", "请先登录");
+        return map;
+    }
+
+    /**
+     * 修改管理员权限
+     *
+     * @param httpServletRequest
+     * @param user_id            管理员id
+     * @param permissions        权限列表篇
+     * @return
+     */
+    @RequestMapping(value = "/adminAddPermissions")
+    public Map<String, Object> adminAddpermissions(HttpServletRequest httpServletRequest, String user_id, String permissions) {
+        HttpSession session = httpServletRequest.getSession();
+        Map<String, Object> map = new HashMap<>();
+        if (user_id == null || permissions == null || user_id.length() < 1 || permissions.length() < 1) {
+            map.put("500", "参数有误");
+            return map;
+        }
+        try {
+            String user_idSession = session.getAttribute("user_id").toString();
+            if ("-1".equals(userInfoService.findByUserId(user_idSession).getPermissions())) {
+                AdminInfoModel adminInfoModel = adminInfoDao.findByUserId(user_id);
+                adminInfoModel.setPermissions(permissions);
+                adminInfoDao.save(adminInfoModel);
+                map.put("200", "添加成功");
+            } else {
+                map.put("500", "权限不足");
+            }
+            return map;
+        } catch (Exception e) {
+            map.put("500", "修改失败");
+            System.out.println("Error：添加管理员权限");
+            return map;
+        }
     }
 
 }

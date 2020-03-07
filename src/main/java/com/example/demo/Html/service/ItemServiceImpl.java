@@ -92,7 +92,24 @@ public class ItemServiceImpl {
         itemHomePageMore.setStockCurrent(stock_mix);
         itemHomePageMore.setParentShopId(shop_id);
         itemHomePageMoreDao.save(itemHomePageMore);
-  /*      throw new Exception("addItemToShop error");*/
+        /*      throw new Exception("addItemToShop error");*/
+    }
+
+
+    /**
+     * 删除寝室内的商品
+     * @param shop_id 寝室id
+     * @param item_id 商品id
+     * @return
+     */
+    @Transactional
+    public boolean deleteItemFromShop(int shop_id, int item_id)  {
+        try {
+            return itemHomePageMoreDao.deleteByParentShopIdAndItemId(item_id, shop_id) == 1;
+        }catch (Exception e){
+            return false;
+        }
+
     }
 }
 

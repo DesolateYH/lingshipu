@@ -3,7 +3,10 @@ package com.example.demo.Html.dao;
 import com.example.demo.Html.model.Item;
 import com.example.demo.Html.model.ItemHomePageMore;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,4 +38,14 @@ public interface ItemHomePageMoreDao extends JpaRepository<ItemHomePageMore,Inte
      */
     ItemHomePageMore findByItemIdAndParentShopId(int i,int p);
 
+    /**
+     * 删除寝室内的商品
+     * @param s 寝室id
+     * @param i 商品id
+     */
+    @Modifying
+    @Transactional
+    @Query(value = "delete from vx_homepage_more  where parent_shop_id = ?1 and item_id=?2",nativeQuery = true)
+    int deleteByParentShopIdAndItemId(int s,int i);
+    /*    void deleteByParentShopIdAndItemId(int s,int i);*/
 }

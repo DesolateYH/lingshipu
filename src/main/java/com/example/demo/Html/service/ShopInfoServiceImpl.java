@@ -59,8 +59,7 @@ public class ShopInfoServiceImpl {
      */
     public boolean deleteShopInfoByShopId(int shopId) {
         try {
-            shopInfoDao.deleteByShopId(shopId);
-            return true;
+            return shopInfoDao.deleteByShopId(shopId) == 1;
         } catch (Exception e) {
             System.out.println("Error:" + e.getMessage());
             return false;

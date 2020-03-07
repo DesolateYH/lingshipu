@@ -2,6 +2,9 @@ package com.example.demo.Html.dao;
 
 import com.example.demo.Html.model.ShopInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @program: lingshipu
@@ -30,6 +33,11 @@ public interface ShopInfoDao extends JpaRepository<ShopInfo,Integer> {
      * 删除寝室信息
      * @param shopId 寝室id
      */
-    void deleteByShopId(int shopId);
+    @Modifying
+    @Transactional
+    @Query(value = "delete from shop_info  where shop_id = ?1",nativeQuery = true)
+    int deleteByShopId(int s);
+/*    void deleteByShopId(int shopId);*/
+
 
 }
