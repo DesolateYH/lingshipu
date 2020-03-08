@@ -132,7 +132,7 @@ public class AdminController {
         shopInfo.setTotalSales("0");
         shopInfo.setUserNum(0);
         shopInfoDao.save(shopInfo);
-        map.put("200", shopInfoDao.findByShopAddress(shop_address).getShopId());
+        map.put("shop_id", shopInfoDao.findByShopAddress(shop_address).getShopId());
         return map;
     }
 
@@ -369,7 +369,7 @@ public class AdminController {
         Map<String, Object> map = new HashMap<>();
         String user_id = session.getAttribute("user_id").toString();
         if("-1".equals(userInfoService.getAdminPermissions(user_id))){
-           map.put("200",adminInfoDao.findAll());
+           map.put("AdminInfo",adminInfoDao.findAll());
            return map;
         }else {
             map.put("500","权限不足");
