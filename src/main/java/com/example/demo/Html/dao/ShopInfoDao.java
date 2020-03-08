@@ -21,6 +21,7 @@ public interface ShopInfoDao extends JpaRepository<ShopInfo,Integer> {
      */
     ShopInfo findByShopId(int shopId);
 
+
     /**
      * 获取相应寝室信息数量
      * @param shopAddress 寝室地址
@@ -38,6 +39,8 @@ public interface ShopInfoDao extends JpaRepository<ShopInfo,Integer> {
     @Query(value = "delete from shop_info  where shop_id = ?1",nativeQuery = true)
     int deleteByShopId(int s);
 /*    void deleteByShopId(int shopId);*/
+
+
 
 
 }

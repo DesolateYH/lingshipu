@@ -79,5 +79,14 @@ public class UserInfoServiceImpl {
         return list;
     }
 
+    /**
+     * 获取管理员权限列表
+     * @param user_id 用户名
+     * @return
+     */
+    public String getAdminPermissions(String user_id){
+        return adminInfoDao.findByUserId(user_id).getPermissions();
+    }
+
 
 }

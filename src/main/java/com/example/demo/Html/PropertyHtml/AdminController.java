@@ -132,7 +132,7 @@ public class AdminController {
         shopInfo.setTotalSales("0");
         shopInfo.setUserNum(0);
         shopInfoDao.save(shopInfo);
-        map.put("200", "寝室添加成功");
+        map.put("200", shopInfoDao.findByShopAddress(shop_address).getShopId());
         return map;
     }
 
@@ -355,6 +355,24 @@ public class AdminController {
         } catch (Exception e) {
             map.put("500", "修改失败");
             System.out.println("Error：添加管理员权限");
+            return map;
+        }
+    }
+
+    /**
+     * 超极管理员获取所有管理员信息
+     * @return
+     */
+    @RequestMapping(value = "/getAllAdminInfo")
+    public Map<String ,Object> getAllAdminInfo(HttpServletRequest httpServletRequest){
+        HttpSession session = httpServletRequest.getSession();
+        Map<String, Object> map = new HashMap<>();
+        String user_id = session.getAttribute("user_id").toString();
+        if("-1".equals(userInfoService.getAdminPermissions(user_id))){
+           map.put("200",adminInfoDao.findAll());
+           return map;
+        }else {
+            map.put("500","权限不足");
             return map;
         }
     }
