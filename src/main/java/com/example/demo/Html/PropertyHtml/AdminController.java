@@ -13,6 +13,7 @@ import com.example.demo.Html.service.UserInfoServiceImpl;
 import com.example.demo.controller.login.HttpRequest;
 import net.bytebuddy.asm.Advice;
 import net.sf.jsqlparser.expression.operators.relational.OldOracleJoinBinaryExpression;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +77,8 @@ public class AdminController {
             map.put("ShopInfo", userInfoService.findShopInfoByAdminPermissions(user_id));
             return map;
         } catch (Exception e) {
-            map.put("500", "请先登录");
+            map.put("status", "500");
+            map.put("msg", "请先登录c");
             return map;
         }
     }
@@ -91,7 +94,8 @@ public class AdminController {
         HttpSession session = httpServletRequest.getSession();
         Map<String, Object> map = new HashMap<>();
         if (shop_id == null) {
-            map.put("500", "参数有误");
+            map.put("status", "500");
+            map.put("msg", "参数有误");
             return map;
         }
         try {
@@ -101,7 +105,8 @@ public class AdminController {
             map.put("userInfo", userInfoService.findUserInfoByUserAddress(shop_address));
             return map;
         } catch (Exception e) {
-            map.put("500", "发生错误");
+            map.put("status", "500");
+            map.put("msg", "未知错误");
             return map;
         }
 
@@ -118,11 +123,13 @@ public class AdminController {
     public Map<String, Object> addShop(String shop_address) {
         Map<String, Object> map = new HashMap<>();
         if (shopInfoService.findExistShopByShopAddress(shop_address)) {
-            map.put("500", "寝室号已经存在");
+            map.put("status", "500");
+            map.put("msg", "寝室已存在");
             return map;
         }
         if (shop_address == null || shop_address.length() < 1) {
-            map.put("500", "参数有误");
+            map.put("status", "500");
+            map.put("msg", "参数有误");
             return map;
         }
 
@@ -147,14 +154,17 @@ public class AdminController {
     public Map<String, Object> deleteShopByShopId(Integer shop_id) {
         Map<String, Object> map = new HashMap<>();
         if (shop_id == null) {
-            map.put("500", "参数有误");
+            map.put("status", "500");
+            map.put("msg", "参数有误");
             return map;
         }
         if (shopInfoService.deleteShopInfoByShopId(shop_id) && itemService.deleteItemByShopId(shop_id)) {
-            map.put("200", "寝室删除成功");
+            map.put("status", "200");
+            map.put("msg", "寝室删除成功");
             return map;
         } else {
-            map.put("500", "寝室删除失败");
+            map.put("status", "500");
+            map.put("msg", "寝室删除失败");
             return map;
         }
     }
@@ -184,23 +194,28 @@ public class AdminController {
     public Map<String, Object> addItemToShop(Integer shop_id, Integer item_id, Integer stock_mix) {
         Map<String, Object> map = new HashMap<>();
         if (shop_id == null || item_id == null || stock_mix == null) {
-            map.put("500", "参数有误");
+            map.put("status", "500");
+            map.put("msg", "参数有误");
             return map;
         }
         if (shopInfoDao.findByShopId(shop_id) == null) {
-            map.put("500", "寝室不存在");
+            map.put("status", "500");
+            map.put("msg", "寝室不存在");
             return map;
         }
         if (itemAllDao.findByItemId(item_id) == null) {
-            map.put("500", "商品id有误，商品在总表中不存在");
+            map.put("status", "500");
+            map.put("msg", "商品在商品总表中不存在");
             return map;
         }
         if (stock_mix < 0) {
-            map.put("500", "库存输入有误");
+            map.put("status", "500");
+            map.put("msg", "库存输入有误");
             return map;
         }
         if (itemHomePageMoreDao.findByItemIdAndParentShopId(item_id, shop_id) != null) {
-            map.put("500", "商品在所选寝室中已经存在");
+            map.put("status", "500");
+            map.put("msg", "商品在所选寝室中已存在");
             return map;
         }
 
@@ -209,11 +224,13 @@ public class AdminController {
             itemAllService.updateInventoryBalance(item_id, -stock_mix);
             itemAllService.updateStockCurrentAll(item_id, stock_mix);*/
             itemAllService.addItemToShopTransactional(shop_id, item_id, stock_mix);
-            map.put("200", "添加成功");
+            map.put("status", "200");
+            map.put("msg", "添加成功");
             return map;
         } catch (Exception e) {
             e.printStackTrace();
-            map.put("500", "添加失败:" + e.getMessage());
+            map.put("status", "500");
+            map.put("msg", "添加失败");
             return map;
         }
 
@@ -232,19 +249,23 @@ public class AdminController {
         HttpSession session = httpServletRequest.getSession();
         Map<String, Object> map = new HashMap<>();
         if (shop_id == null || item_id == null) {
-            map.put("500", "参数有误");
+            map.put("status", "500");
+            map.put("msg", "参数有误");
             return map;
         }
         try {
             String user_id = session.getAttribute("user_id").toString();
             if (itemService.deleteItemFromShop(shop_id, item_id)) {
-                map.put("200", "200");
+                map.put("status", "200");
+                map.put("msg", "删除成功");
             } else {
-                map.put("500", "删除失败");
+                map.put("status", "500");
+                map.put("msg", "删除失败");
             }
             return map;
         } catch (Exception e) {
-            map.put("500", "请先登录");
+            map.put("status", "500");
+            map.put("msg", "请先登录");
             return map;
         }
     }
@@ -261,16 +282,22 @@ public class AdminController {
         AdminInfoModel adminInfoModel = userInfoService.findByUserIdAndPassword(user_id, password);
         Map<String, Object> map = new HashMap<>();
         if (user_id == null || password == null || user_id.length() < 1 || password.length() < 1) {
-            map.put("500", "参数有误");
+            map.put("status", "500");
+            map.put("msg", "参数有误");
             return map;
         }
         if (adminInfoModel == null) {
-            map.put("500", "用户名密码错误");
+            map.put("status", "500");
+            map.put("msg", "用户名密码错误");
             return map;
         } else {
             HttpSession session = request.getSession();
             session.setAttribute("user_id", adminInfoModel.getUserId());
-            map.put("200", "登录成功");
+            if ("-1".equals(userInfoService.getAdminPermissions(user_id))) {
+                map.put("Info", "-1");
+            } else {
+                map.put("Info", "0");
+            }
             return map;
         }
     }
@@ -292,7 +319,8 @@ public class AdminController {
         Map<String, Object> map = new HashMap<>();
         if (user_id == null || password == null || nickname == null || permissions == null || user_id.length() < 1 ||
                 password.length() < 1 || nickname.length() < 1 || permissions.length() < 1) {
-            map.put("500", "参数有误");
+            map.put("status", "500");
+            map.put("msg", "参数有误");
             return map;
         }
         try {
@@ -304,13 +332,17 @@ public class AdminController {
                 adminInfoModel.setNickName(nickname);
                 adminInfoModel.setPermissions(permissions);
                 adminInfoDao.save(adminInfoModel);
-                map.put("200", "添加成功");
+                map.put("status", "200");
+                map.put("msg", "添加成功");
+                ;
             } else {
-                map.put("500", "权限不足");
+                map.put("status", "500");
+                map.put("msg", "权限不足");
             }
             return map;
         } catch (Exception e) {
-            map.put("500", "请先登录");
+            map.put("status", "500");
+            map.put("msg", "请先登录");
             return map;
         }
     }
@@ -321,7 +353,8 @@ public class AdminController {
     @RequestMapping(value = "/adminLoginError")
     public Map<String, Object> adminLoginError() {
         Map<String, Object> map = new HashMap<>();
-        map.put("500", "请先登录");
+        map.put("status", "500");
+        map.put("msg", "请先登录");
         return map;
     }
 
@@ -338,22 +371,33 @@ public class AdminController {
         HttpSession session = httpServletRequest.getSession();
         Map<String, Object> map = new HashMap<>();
         if (user_id == null || permissions == null || user_id.length() < 1 || permissions.length() < 1) {
-            map.put("500", "参数有误");
+            map.put("status", "500");
+            map.put("msg", "参数有误");
             return map;
         }
         try {
+            String[] permissionsAddressArrary = permissions.split("\\|");
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String v : permissionsAddressArrary) {
+                String shop_id = String.valueOf(shopInfoDao.findByShopAddress(v).getShopId());
+                stringBuilder.append(shop_id).append("|");
+            }
+
             String user_idSession = session.getAttribute("user_id").toString();
             if ("-1".equals(userInfoService.findByUserId(user_idSession).getPermissions())) {
                 AdminInfoModel adminInfoModel = adminInfoDao.findByUserId(user_id);
-                adminInfoModel.setPermissions(permissions);
+                adminInfoModel.setPermissions(stringBuilder.toString());
                 adminInfoDao.save(adminInfoModel);
-                map.put("200", "添加成功");
+                map.put("status", "200");
+                map.put("msg", "添加成功");
             } else {
-                map.put("500", "权限不足");
+                map.put("status", "500");
+                map.put("msg", "权限不足");
             }
             return map;
         } catch (Exception e) {
-            map.put("500", "修改失败");
+            map.put("status", "500");
+            map.put("msg", "修改失败");
             System.out.println("Error：添加管理员权限");
             return map;
         }
@@ -361,18 +405,34 @@ public class AdminController {
 
     /**
      * 超极管理员获取所有管理员信息
+     *
      * @return
      */
     @RequestMapping(value = "/getAllAdminInfo")
-    public Map<String ,Object> getAllAdminInfo(HttpServletRequest httpServletRequest){
+    public Map<String, Object> getAllAdminInfo(HttpServletRequest httpServletRequest) {
         HttpSession session = httpServletRequest.getSession();
         Map<String, Object> map = new HashMap<>();
         String user_id = session.getAttribute("user_id").toString();
-        if("-1".equals(userInfoService.getAdminPermissions(user_id))){
-           map.put("AdminInfo",adminInfoDao.findAll());
-           return map;
-        }else {
-            map.put("500","权限不足");
+        if ("-1".equals(userInfoService.getAdminPermissions(user_id))) {
+            List<AdminInfoModel> adminInfoModelsPO = adminInfoDao.findAll();
+            for (AdminInfoModel adminInfoModel : adminInfoModelsPO) {
+                if ("-1".equals(adminInfoModel.getPermissions())) {
+                    adminInfoModel.setPermissions("全部|");
+                    continue;
+                }
+                List<ShopInfo> shopInfos = userInfoService.findShopInfoByAdminPermissions(adminInfoModel.getUserId());
+                StringBuilder shopAddressVO = new StringBuilder();
+                for (ShopInfo shopInfo : shopInfos) {
+                    String shopAddress = shopInfo.getShopAddress();
+                    shopAddressVO.append(shopAddress).append("|");
+                }
+                adminInfoModel.setPermissions(shopAddressVO.toString());
+            }
+            map.put("AdminInfo", adminInfoModelsPO);
+            return map;
+        } else {
+            map.put("status", "500");
+            map.put("msg", "权限不足");
             return map;
         }
     }
