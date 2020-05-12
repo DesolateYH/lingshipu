@@ -1,16 +1,21 @@
 package com.example.demo.Html;
 
 import com.sun.management.OperatingSystemMXBean;
+
 import java.lang.management.ManagementFactory;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
 
 public class ToolUntil {
 
     /**
      * 获取操作系统名称
+     *
      * @return
      */
-    public static String getOsName(){
+    public static String getOsName() {
         // 操作系统
         String osName = System.getProperty("os.name");
         return osName;
@@ -18,9 +23,10 @@ public class ToolUntil {
 
     /**
      * 获取系统cpu负载
+     *
      * @return
      */
-    public static String getSystemCpuLoad(){
+    public static String getSystemCpuLoad() {
         OperatingSystemMXBean osmxb = (OperatingSystemMXBean) ManagementFactory
                 .getOperatingSystemMXBean();
         double SystemCpuLoad = osmxb.getSystemCpuLoad();
@@ -31,9 +37,10 @@ public class ToolUntil {
 
     /**
      * 获取jvm线程负载
+     *
      * @return
      */
-    public static String getProcessCpuLoad(){
+    public static String getProcessCpuLoad() {
         OperatingSystemMXBean osmxb = (OperatingSystemMXBean) ManagementFactory
                 .getOperatingSystemMXBean();
         double ProcessCpuLoad = osmxb.getProcessCpuLoad();
@@ -44,9 +51,10 @@ public class ToolUntil {
 
     /**
      * 获取总的物理内存
+     *
      * @return
      */
-    public static long getTotalMemorySize(){
+    public static long getTotalMemorySize() {
         int kb = 1024;
         OperatingSystemMXBean osmxb = (OperatingSystemMXBean) ManagementFactory
                 .getOperatingSystemMXBean();
@@ -57,9 +65,10 @@ public class ToolUntil {
 
     /**
      * 获取剩余的物理内存
+     *
      * @return
      */
-    public static long getFreePhysicalMemorySize(){
+    public static long getFreePhysicalMemorySize() {
         int kb = 1048576;
         OperatingSystemMXBean osmxb = (OperatingSystemMXBean) ManagementFactory
                 .getOperatingSystemMXBean();
@@ -70,9 +79,10 @@ public class ToolUntil {
 
     /**
      * 获取已使用的物理内存
+     *
      * @return
      */
-    public static long getUsedMemory(){
+    public static long getUsedMemory() {
         int kb = 1024;
         OperatingSystemMXBean osmxb = (OperatingSystemMXBean) ManagementFactory
                 .getOperatingSystemMXBean();
@@ -80,4 +90,20 @@ public class ToolUntil {
         long usedMemory = (osmxb.getTotalPhysicalMemorySize() - osmxb.getFreePhysicalMemorySize()) / kb;
         return usedMemory;
     }
+
+    /**
+     * 生成订单号
+     * @return 1
+     */
+    public static String getOrderIdByTime() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String newDate = sdf.format(new Date());
+        String result = "";
+        Random random = new Random();
+        for (int i = 0; i < 3; i++) {
+            result += random.nextInt(10);
+        }
+        return newDate + result;
+    }
+
 }

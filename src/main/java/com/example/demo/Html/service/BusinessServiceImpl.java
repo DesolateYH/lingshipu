@@ -1,13 +1,12 @@
 package com.example.demo.Html.service;
 
-import com.example.demo.Html.dao.BusinessDao;
-import com.example.demo.Html.model.Business;
+import com.example.demo.Html.repository.BusinessDao;
+import com.example.demo.Html.domian.Business;
 import com.example.demo.db.DbManage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
 

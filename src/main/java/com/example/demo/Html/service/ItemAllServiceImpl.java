@@ -1,14 +1,12 @@
 package com.example.demo.Html.service;
 
-import com.example.demo.Html.dao.ItemAllDao;
-import com.example.demo.Html.model.ItemAllModel;
-import com.example.demo.Html.model.ItemHomePageMore;
+import com.example.demo.Html.repository.ItemAllDao;
+import com.example.demo.Html.domian.po.ItemAllModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @program: lingshipu

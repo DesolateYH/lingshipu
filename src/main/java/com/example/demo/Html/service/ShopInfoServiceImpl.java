@@ -1,11 +1,9 @@
 package com.example.demo.Html.service;
 
-import com.example.demo.Html.dao.ShopInfoDao;
-import com.example.demo.Html.model.ShopInfo;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.Html.repository.ShopInfoDao;
+import com.example.demo.Html.domian.po.ShopInfo;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 /**

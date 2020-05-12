@@ -1,12 +1,12 @@
 package com.example.demo.Html.service;
 
-import com.example.demo.Html.dao.ItemAllDao;
-import com.example.demo.Html.dao.ItemDao;
-import com.example.demo.Html.dao.ItemHomePageMoreDao;
-import com.example.demo.Html.model.Item;
-import com.example.demo.Html.model.ItemAllModel;
-import com.example.demo.Html.model.ItemAndHomePageMoreRelation;
-import com.example.demo.Html.model.ItemHomePageMore;
+import com.example.demo.Html.repository.ItemAllDao;
+import com.example.demo.Html.repository.ItemDao;
+import com.example.demo.Html.repository.ItemHomePageMoreDao;
+import com.example.demo.Html.domian.Item;
+import com.example.demo.Html.domian.po.ItemAllModel;
+import com.example.demo.Html.domian.ItemAndHomePageMoreRelation;
+import com.example.demo.Html.domian.po.ItemHomePageMore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,6 +73,8 @@ public class ItemServiceImpl {
             return false;
         }
     }
+
+
 
     /**
      * 往寝室内添加商品

@@ -14,7 +14,7 @@ import java.util.List;
  * @create: 2020-03-06 00:03
  */
 public class Filter implements javax.servlet.Filter {
-    private final List<String> allowedOrigins = Arrays.asList("http://106.127.173.82:8080", "http://localhost:8080");// 允许跨域的地址
+    private final List<String> allowedOrigins = Arrays.asList("http://218.74.47.78","http://localhost:10001", "http://127.0.0.1","http://chinaqwe.top","http://lsp.chinaqwe.top");//"00允许跨域的地址
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

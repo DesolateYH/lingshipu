@@ -1,20 +1,16 @@
 package com.example.demo.Html.service;
 
-import com.example.demo.Html.dao.PropertyaDao;
-import com.example.demo.Html.dao.Propertya_InfoDao;
-import com.example.demo.Html.model.Propertya;
-import com.example.demo.Html.model.Propertya_Info;
+import com.example.demo.Html.repository.PropertyaDao;
+import com.example.demo.Html.repository.Propertya_InfoDao;
+import com.example.demo.Html.domian.Propertya_Info;
 import com.example.demo.Logic.Community.LUserGetInfo;
-import javafx.beans.property.Property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.List;
 
 /**
  * @author ：Q

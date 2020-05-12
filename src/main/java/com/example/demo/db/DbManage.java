@@ -6,9 +6,9 @@ public class DbManage {
     public DriverManagerDataSource getDataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://116.62.161.99:3306/lingshipu");
+        ds.setUrl("jdbc:mysql://lsp.chinaqwe.top:3306/lingshipu?useSSL=false");
+        ds.setUsername("root");
         ds.setPassword("qwe123");
-        ds.setUsername("javaee");
         return ds;
     }
 }

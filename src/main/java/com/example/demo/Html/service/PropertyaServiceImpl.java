@@ -1,7 +1,7 @@
 package com.example.demo.Html.service;
 
-import com.example.demo.Html.dao.PropertyaDao;
-import com.example.demo.Html.model.Propertya;
+import com.example.demo.Html.repository.PropertyaDao;
+import com.example.demo.Html.domian.Propertya;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
