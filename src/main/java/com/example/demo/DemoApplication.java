@@ -46,6 +46,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -55,15 +57,17 @@ import java.util.List;
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
+/*@EnableScheduling
+@EnableCaching*/
 /*@RunWith(SpringRunner.class)*/
 @ServletComponentScan
+@EnableJpaAuditing
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class DemoApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }
-
     @Bean
     public FilterRegistrationBean filterRegistrationBean() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();

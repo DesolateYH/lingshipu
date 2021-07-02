@@ -14,7 +14,10 @@ import java.util.List;
  * @create: 2020-03-06 00:03
  */
 public class Filter implements javax.servlet.Filter {
-    private final List<String> allowedOrigins = Arrays.asList("http://218.74.47.78","http://localhost:10001", "http://127.0.0.1","http://chinaqwe.top","http://lsp.chinaqwe.top");//"00允许跨域的地址
+    private final List<String> allowedOrigins = Arrays.asList("http://120.26.85.65", "http://localhost:10001",
+            "http://127.0.0.1", "http://chinaqwe.top", "http://lsp.chinaqwe.top", "http://localhost:8080",
+            "http://localhost:8081", "http://120.26.85.65:8080", "http://120.26.85.65:8081",
+            "http://lsp.chinaqwe.top:9000");//允许跨域的地址
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -29,7 +32,7 @@ public class Filter implements javax.servlet.Filter {
 
 
         System.out.println("----调用service之前执行一段代码----");
-        response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Accept, Content-Type");
+        response.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Accept, Content-Type,Authorization");
         response.setHeader("Access-Control-Allow-Methods", "GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH");
         String origin = request.getHeader("Origin");
         response.setHeader("Access-Control-Allow-Origin", allowedOrigins.contains(origin) ? origin : "");
