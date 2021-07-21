@@ -1,7 +1,7 @@
-package com.example.demo.newlsp.controller;
+package com.example.demo.newlsp.controller.user;
 
 import com.alibaba.fastjson.JSON;
-import com.example.demo.CheckParamsInterceptor;
+
 import com.example.demo.html.controller.AuthUtil;
 import com.example.demo.html.controller.HttpRequest;
 import com.example.demo.html.controller.WXPayUtil;
@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.demo.CheckParamsInterceptor.*;
+
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -365,7 +365,7 @@ public class LspUserController {
      * @return 1
      */
     @RequestMapping(value = "/getOrderByShopAddress")
-    public Msg getOrderByShopAddress(@CheckParamsInterceptor.ParamsNotNull String access_token) {
+    public Msg getOrderByShopAddress( String access_token) {
         if (lspVxUserService.getByToken(access_token) == null) {
             return Msg.statu401();
         }
@@ -381,7 +381,7 @@ public class LspUserController {
      * @return 1
      */
     @RequestMapping(value = "/getReplenishment")
-    public Msg getReplenishment(@CheckParamsInterceptor.ParamsNotNull String access_token) {
+    public Msg getReplenishment( String access_token) {
         if (lspVxUserService.getByToken(access_token) == null) {
             return Msg.statu401();
         }
@@ -401,7 +401,7 @@ public class LspUserController {
      * @return 1
      */
     @RequestMapping(value = "/updateUserInfo")
-    public Msg updateUserInfo(@ParamsNotNull String access_token, String userTelephone,
+    public Msg updateUserInfo( String access_token, String userTelephone,
                                                                       String userBuilding, String userFloor, String userDormitory) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         UserInfoModel userInfoModel = userInfoService.findByOpenid(openid);
@@ -428,7 +428,7 @@ public class LspUserController {
      * @return 1
      */
     @RequestMapping(value = "/getAllItem")
-    public Msg getAllItem(@ParamsNotNull String access_token){
+    public Msg getAllItem( String access_token){
         if (lspVxUserService.getByToken(access_token) == null) {
             return Msg.statu401();
         }

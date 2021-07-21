@@ -1,16 +1,11 @@
 package com.example.demo.newlsp;
 
-import com.example.demo.CheckParamsInterceptor;
 import com.example.demo.html.domian.po.ReplenishmentPO;
-import com.example.demo.html.domian.po.UserInfoModel;
-import com.example.demo.html.domian.vo.Msg;
 import com.example.demo.html.repository.ReplenishmentRepository;
 import com.example.demo.html.service.LspVxUserServiceImpl;
 import com.example.demo.html.service.UserInfoServiceImpl;
-import com.example.demo.newlsp.repository.DeliveryVehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * @program: lingshipu

@@ -1,29 +1,22 @@
-package com.example.demo.newlsp.controller;
+package com.example.demo.newlsp.controller.admin;
 
-import com.example.demo.CheckAdminInterceptor;
-import com.example.demo.CheckParamsInterceptor;
+
 import com.example.demo.html.ToolUntil;
-import com.example.demo.html.domian.Item;
 import com.example.demo.html.domian.po.ItemAllModel;
-import com.example.demo.html.domian.po.ItemHomePageMore;
 import com.example.demo.html.domian.po.SortPagePO;
 import com.example.demo.html.domian.po.UserInfoModel;
 import com.example.demo.html.domian.vo.Msg;
-import com.example.demo.html.domian.vo.SortPageItemVO;
-import com.example.demo.html.domian.vo.SortPageVO;
 import com.example.demo.html.repository.ItemAllDao;
 import com.example.demo.html.repository.ItemHomePageMoreDao;
 import com.example.demo.html.repository.SortPageRepository;
-import com.example.demo.html.repository.UserInfoDao;
 import com.example.demo.html.service.LspVxUserServiceImpl;
 import com.example.demo.html.service.UserInfoServiceImpl;
-import com.example.demo.newlsp.domain.po.OperationRecordPO;
+import com.example.demo.newlsp.controller.admin.OperationRecordController;
 import com.example.demo.newlsp.domain.vo.SortPageSotckVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.demo.CheckParamsInterceptor.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -64,12 +57,12 @@ public class StockController {
      * @return 1
      */
     @RequestMapping(value = "/addStock")
-    public Msg addStock(@ParamsNotNull String itemName,
-                        @ParamsNotNull String itemPrice,
-                        @ParamsNotNull Integer itemNum,
-                        @ParamsNotNull Integer sort_id,
-                        @ParamsNotNull @CheckAdminInterceptor.CheckAdmin String access_token,
-                      MultipartFile file) throws Exception {
+    public Msg addStock(String itemName,
+                        String itemPrice,
+                        Integer itemNum,
+                        Integer sort_id,
+                        String access_token,
+                        MultipartFile file) throws Exception {
         ItemAllModel itemAllModel = new ItemAllModel();
 
         String openid = lspVxUserService.getOpenidByToken(access_token);
@@ -79,7 +72,7 @@ public class StockController {
         UserInfoModel userInfoModel = userInfoService.findByOpenid(openid);
 
 
-        if ( itemNum < 0) {
+        if (itemNum < 0) {
             return Msg.statu400().add("info", "参数超出范围");
         }
         String url = ToolUntil.uploadFile(file);
@@ -99,7 +92,6 @@ public class StockController {
         itemAllModels.add(itemAllModel);
 
 
-
         operationRecordController.saveOpeartionRecord(userInfoModel.getAdminId(), itemAllModels, "添加到库存");
 
         return Msg.statu200();
@@ -108,12 +100,13 @@ public class StockController {
     /**
      * 删除库存
      *
-     * @param itemId 商品id
+     * @param itemId       商品id
+     * @param access_token token
      * @return 203拦截器判断参数为空、400参数超出范围、403商品id不存在、403用户盒子中有剩余商品
      */
     @RequestMapping(value = "/deleteStock")
-    @Transactional
-    public Msg deleteStock(@ParamsNotNull Integer itemId) {
+    @Transactional(rollbackFor = Exception.class)
+    public Msg deleteStock(Integer itemId, String access_token) {
         if (itemId < 0) {
             return Msg.statu400().add("info", "参数超出范围");
         }
@@ -123,13 +116,19 @@ public class StockController {
         if (itemHomePageMoreDao.findByItemId(itemId).size() != 0) {
             return Msg.statu403().add("info", "用户盒子中有剩余商品");
         }
+
         ItemAllModel itemAllModel = itemAllDao.findByItemId(itemId);
+        String openid = lspVxUserService.getOpenidByToken(access_token);
+        if (openid == null || openid.length() < 1) {
+            return Msg.statu401();
+        }
+        UserInfoModel userInfoModel = userInfoService.findByOpenid(openid);
         try {
             itemAllDao.deleteByItemId(itemId);
 
             List<ItemAllModel> itemAllModels = new ArrayList<>();
             itemAllModels.add(itemAllModel);
-            operationRecordController.saveOpeartionRecord("待添加", itemAllModels, "删除库存");
+            operationRecordController.saveOpeartionRecord(userInfoModel.getAdminId(), itemAllModels, "删除库存");
 
             return Msg.statu200();
         } catch (Exception e) {
@@ -146,11 +145,14 @@ public class StockController {
      * @param stockCurrentAll  总已投放库存
      * @param salesVolumeAll   总销量
      * @param inventoryBalance 总未投放库存
+     * @param access_token     token
      * @return 数字类型没有做负数判断
      */
     @RequestMapping(value = "/updateStock")
-    public Msg updateStock(@ParamsNotNull Integer itemId, String itemName, String itemPrice,
-                           Integer inventoryBalance, Integer stockCurrentAll, Integer salesVolumeAll) {
+    @Transactional(rollbackFor = Exception.class)
+    public Msg updateStock(Integer itemId, String itemName, String itemPrice,
+                           Integer inventoryBalance, Integer stockCurrentAll,
+                           Integer salesVolumeAll, String access_token) {
 
 
         if (itemAllDao.findByItemId(itemId) == null) {
@@ -171,20 +173,28 @@ public class StockController {
             itemAllModel.setSalesVolumeAll(salesVolumeAll);
         itemAllModel.setItemPicUrl("https://dss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3791918726,2864900975&fm=26&gp=0.jpg");
         itemAllDao.save(itemAllModel);
+        String openid = lspVxUserService.getOpenidByToken(access_token);
+        if (openid == null || openid.length() < 1) {
+            return Msg.statu401();
+        }
+        UserInfoModel userInfoModel = userInfoService.findByOpenid(openid);
+        List<ItemAllModel> itemAllModels = new ArrayList<>();
+        operationRecordController.saveOpeartionRecord(userInfoModel.getAdminId(), itemAllModels, "添加到库存");
         return Msg.statu200();
     }
 
     /**
      * 获取全部库存商品（带分类）
+     *
      * @param access_token token
      * @return 1
      */
     @RequestMapping(value = "/getAllWithSort")
-    public Msg getAllWithSort(@ParamsNotNull @CheckAdminInterceptor.CheckAdmin String access_token){
+    public Msg getAllWithSort(String access_token) {
         List<ItemAllModel> itemAllModels = itemAllDao.findAll();
         List<SortPagePO> sortPagePOS = sortPageRepository.findAll();
         List<SortPageSotckVO> sortPageSotckVOS = new ArrayList<>();
-        for(SortPagePO sortPagePO : sortPagePOS){
+        for (SortPagePO sortPagePO : sortPagePOS) {
             SortPageSotckVO sortPageSotckVO = new SortPageSotckVO();
             sortPageSotckVO.setSortId(sortPagePO.getSortId());
             sortPageSotckVO.setSortName(sortPagePO.getSortName());
@@ -193,15 +203,15 @@ public class StockController {
 
             int sortId = sortPagePO.getSortId();
             List<ItemAllModel> itemAllModels1 = new ArrayList<>();
-            for(ItemAllModel itemAllModel : itemAllModels){
-                if(itemAllModel.getItemSortId()==sortId){
+            for (ItemAllModel itemAllModel : itemAllModels) {
+                if (itemAllModel.getItemSortId() == sortId) {
                     itemAllModels1.add(itemAllModel);
                 }
             }
             sortPageSotckVO.setSortPageItem(itemAllModels1);
             sortPageSotckVOS.add(sortPageSotckVO);
         }
-        return Msg.statu200().add("info",sortPageSotckVOS);
+        return Msg.statu200().add("info", sortPageSotckVOS);
     }
 
 }

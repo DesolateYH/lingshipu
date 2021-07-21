@@ -1,6 +1,6 @@
-package com.example.demo.newlsp.controller;
+package com.example.demo.newlsp.controller.admin;
 
-import com.example.demo.CheckParamsInterceptor;
+
 import com.example.demo.html.domian.po.ShopInfo;
 import com.example.demo.html.domian.po.UserInfoModel;
 import com.example.demo.html.domian.vo.Msg;
@@ -13,9 +13,7 @@ import com.example.demo.newlsp.repository.NoticRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.demo.CheckParamsInterceptor.*;
 
-import javax.annotation.Resource;
 
 /**
  * @program: lingshipu
@@ -56,7 +54,7 @@ public class NoticController {
      * @return 1
      */
     @RequestMapping(value = "/saveNotic")
-    public Msg saveNotic(@CheckParamsInterceptor.ParamsNotNull String access_token, String notic) {
+    public Msg saveNotic( String access_token, String notic) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         if (openid == null || openid.length() < 1) {
             return Msg.statu401();
@@ -87,7 +85,7 @@ public class NoticController {
      * @return 1
      */
     @RequestMapping(value = "/getNoticByShopId")
-    public Msg getNoticByShopId(@ParamsNotNull String access_token, @ParamsNotNull String shopId) {
+    public Msg getNoticByShopId( String access_token,  String shopId) {
         if("0".equals(shopId)){
             return Msg.statu200().add("info",shopInfoDao.findAll());
         }
@@ -108,8 +106,8 @@ public class NoticController {
      * @return 1
      */
     @RequestMapping(value = "/saveNoticByShopId")
-    public Msg saveNoticByShopId(@CheckParamsInterceptor.ParamsNotNull String access_token,
-                                 String notic, @ParamsNotNull String shopId) {
+    public Msg saveNoticByShopId( String access_token,
+                                 String notic,  String shopId) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         if (openid == null || openid.length() < 1) {
             return Msg.statu401();

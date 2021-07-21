@@ -1,9 +1,6 @@
-package com.example.demo.newlsp.controller;
+package com.example.demo.newlsp.controller.admin;
 
 import com.alibaba.fastjson.JSON;
-import com.example.demo.CheckAdminInterceptor;
-import com.example.demo.CheckParamsInterceptor;
-import com.example.demo.html.SessionUtil;
 import com.example.demo.html.controller.AuthUtil;
 import com.example.demo.html.controller.HttpRequest;
 import com.example.demo.html.controller.WXPayUtil;
@@ -11,42 +8,25 @@ import com.example.demo.html.domian.po.*;
 import com.example.demo.html.domian.vo.Msg;
 import com.example.demo.html.repository.*;
 import com.example.demo.html.service.*;
-import com.example.demo.newlsp.controller.OperationRecordController;
 import com.example.demo.newlsp.domain.po.InventoryRecordPO;
 import com.example.demo.newlsp.repository.InventoryRecordRepository;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.http.entity.mime.MultipartEntityBuilder;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.demo.CheckParamsInterceptor.*;
-import com.example.demo.CheckAdminInterceptor.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.sql.SQLOutput;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
@@ -54,19 +34,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-import org.apache.commons.httpclient.Header;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.httpclient.methods.PostMethod;
-import org.apache.commons.httpclient.methods.multipart.FilePart;
-import org.apache.commons.httpclient.methods.multipart.MultipartRequestEntity;
-import org.apache.commons.httpclient.methods.multipart.Part;
-
-
-import static com.example.demo.html.MultipartFileToFile.multipartFileToFile;
-import static com.example.demo.html.ToolUntil.decodeUnicode;
 import static com.example.demo.html.ToolUntil.uploadFile;
-import static com.example.demo.html.controller.HttpRequest.sendFileReq;
 
 /**
  * @program: lingshipu
@@ -220,7 +188,7 @@ public class LspAdminController {
      */
     @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/addShop")
-    public Msg addShop(@ParamsNotNull String access_token, @ParamsNotNull String shop_address) {
+    public Msg addShop( String access_token,  String shop_address) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         if (openid == null || openid.length() < 1) {
             return Msg.statu401();
@@ -257,7 +225,7 @@ public class LspAdminController {
      */
     @Transactional(rollbackFor = Exception.class)
     @RequestMapping(value = "/deleteShopByShopId")
-    public Msg deleteShopByShopId(@ParamsNotNull String access_token, @ParamsNotNull Integer shop_id) {
+    public Msg deleteShopByShopId( String access_token,  Integer shop_id) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         if (openid == null || openid.length() < 1) {
             return Msg.statu401();
@@ -284,7 +252,7 @@ public class LspAdminController {
      * @return 商品列表
      */
     @RequestMapping(value = "/findAllItem")
-    public Msg findAllItem(@CheckAdmin String access_token) throws InterruptedException {
+    public Msg findAllItem( String access_token) throws InterruptedException {
         if (access_token == null || access_token.length() < 1) {
             return Msg.statu400();
         }
@@ -361,7 +329,7 @@ public class LspAdminController {
      */
     @RequestMapping(value = "/addItemToShop")
     @Transactional(rollbackFor = Exception.class)
-    public Msg addItemToShop(@ParamsNotNull String access_token, String itemJson, Integer shop_id) throws Exception {
+    public Msg addItemToShop( String access_token, String itemJson, Integer shop_id) throws Exception {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         if (openid == null || openid.length() < 1) {
             return Msg.statu401();
@@ -413,8 +381,8 @@ public class LspAdminController {
      * @return 1
      */
     @RequestMapping(value = "/deleteItemFromShop")
-    public Msg deleteItemFromShop(@ParamsNotNull String access_token, @ParamsNotNull Integer shop_id,
-                                  @ParamsNotNull Integer item_id) {
+    public Msg deleteItemFromShop( String access_token,  Integer shop_id,
+                                   Integer item_id) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         if (openid == null || openid.length() < 1) {
             return Msg.statu401();
@@ -551,7 +519,7 @@ public class LspAdminController {
      * @return
      */
     @RequestMapping(value = "/adminAddPermissions")
-    public Map<String, Object> adminAddpermissions(@ParamsNotNull @CheckAdmin String access_token, String user_id, String permissions) {
+    public Map<String, Object> adminAddpermissions(  String access_token, String user_id, String permissions) {
 
         Map<String, Object> map = new HashMap<>();
         if (user_id == null || permissions == null || user_id.length() < 1 || permissions.length() < 1) {
@@ -590,7 +558,7 @@ public class LspAdminController {
      * @return
      */
     @RequestMapping(value = "/getAllAdminInfo")
-    public Map<String, Object> getAllAdminInfo(@CheckAdmin String access_token) {
+    public Map<String, Object> getAllAdminInfo( String access_token) {
 
         Map<String, Object> map = new HashMap<>();
 
@@ -900,7 +868,7 @@ public class LspAdminController {
      * @return 1
      */
     @RequestMapping(value = "/addSort")
-    public Msg addSort(@ParamsNotNull String access_token, @ParamsNotNull String sortName, @ParamsNotNull String pic_address,
+    public Msg addSort( String access_token,  String sortName,  String pic_address,
                        MultipartFile file) throws Exception {
 
 
@@ -928,7 +896,7 @@ public class LspAdminController {
      * @return 1
      */
     @RequestMapping(value = "/getSort")
-    public Msg getSort(@ParamsNotNull String access_token) {
+    public Msg getSort( String access_token) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         UserInfoModel userInfoModel = userInfoService.findByOpenid(openid);
         if ("0".equals(userInfoModel.getAdminId())) {
@@ -946,7 +914,7 @@ public class LspAdminController {
      */
     @Transactional
     @RequestMapping(value = "/deleteSort")
-    public Msg deleteSort(@ParamsNotNull String access_token, @ParamsNotNull Integer sortId) {
+    public Msg deleteSort( String access_token,  Integer sortId) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         if (openid == null || openid.length() < 1) {
             return Msg.statu401();
@@ -974,7 +942,7 @@ public class LspAdminController {
      */
     @Transactional
     @RequestMapping(value = "/updateSort")
-    public Msg updateSort(@ParamsNotNull String access_token, @ParamsNotNull Integer sortId, @ParamsNotNull String sortName,
+    public Msg updateSort( String access_token,  Integer sortId,  String sortName,
                           MultipartFile file) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         if (openid == null || openid.length() < 1) {
@@ -1017,8 +985,8 @@ public class LspAdminController {
      * @return 1
      */
     @RequestMapping(value = "/getAllOrder")
-    public Msg getAllOrder(@ParamsNotNull String access_token, @ParamsNotNull Integer pageNum, @ParamsNotNull Integer size,
-                           Integer sortField, Integer sortType, @ParamsNotNull Integer likeFlag, String likeInfo) {
+    public Msg getAllOrder( String access_token,  Integer pageNum,  Integer size,
+                           Integer sortField, Integer sortType,  Integer likeFlag, String likeInfo) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         if (openid == null || openid.length() < 1) {
             return Msg.statu401();

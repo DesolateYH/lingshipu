@@ -49,6 +49,9 @@ public class ItemAllModel {
      * 分类id
      */
     int itemSortId;
-
+    /**
+     * 商品进货价
+     */
+    private String itemCommodityPurchasePrice;
 
 }

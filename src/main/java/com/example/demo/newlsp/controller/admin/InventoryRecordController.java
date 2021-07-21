@@ -1,6 +1,5 @@
-package com.example.demo.newlsp.controller;
+package com.example.demo.newlsp.controller.admin;
 
-import com.example.demo.CheckParamsInterceptor;
 import com.example.demo.html.domian.vo.Msg;
 import com.example.demo.html.service.LspVxUserServiceImpl;
 import com.example.demo.html.service.UserInfoServiceImpl;
@@ -8,10 +7,7 @@ import com.example.demo.newlsp.repository.InventoryRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.demo.CheckAdminInterceptor.*;
-import com.example.demo.CheckParamsInterceptor.*;
 
-import javax.annotation.Resource;
 
 /**
  * @program: lingshipu
@@ -38,7 +34,7 @@ public class InventoryRecordController {
      * @return 1
      */
     @RequestMapping(value = "/getAll")
-    public Msg getAll(@ParamsNotNull @CheckAdmin String access_token) {
+    public Msg getAll( String access_token) {
         return Msg.statu200().add("info", inventoryRecordRepository.findAll());
     }
 
@@ -49,7 +45,7 @@ public class InventoryRecordController {
      * @return 1
      */
     @RequestMapping(value = "/getByShopId")
-    public Msg getByShopId(@ParamsNotNull @CheckAdmin String access_token,@ParamsNotNull Integer shopId) {
+    public Msg getByShopId( String access_token,Integer shopId) {
         return Msg.statu200().add("info",inventoryRecordRepository.findByInventoryRecordShopId(shopId));
     }
 }

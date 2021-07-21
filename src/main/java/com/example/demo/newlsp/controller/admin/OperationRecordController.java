@@ -1,6 +1,5 @@
-package com.example.demo.newlsp.controller;
+package com.example.demo.newlsp.controller.admin;
 
-import com.example.demo.CheckParamsInterceptor;
 import com.example.demo.html.domian.po.ItemAllModel;
 import com.example.demo.html.domian.po.UserInfoModel;
 import com.example.demo.html.domian.vo.Msg;
@@ -14,7 +13,6 @@ import com.example.demo.newlsp.repository.OperationRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.demo.CheckParamsInterceptor.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +45,7 @@ public class OperationRecordController {
      * @return 1
      */
     @RequestMapping(value = "/getAllOpeartionRecord")
-    public Msg getAllOpeartionRecord(@ParamsNotNull String access_token) {
+    public Msg getAllOpeartionRecord( String access_token) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         if (openid == null || openid.length() < 1) {
             return Msg.statu401();
@@ -67,7 +65,7 @@ public class OperationRecordController {
      * @return 1
      */
     @RequestMapping(value = "/getOpeartionRecordDetail")
-    public Msg getOpeartionRecordDetail(@ParamsNotNull String access_token,@ParamsNotNull String operationRecordSerial) {
+    public Msg getOpeartionRecordDetail( String access_token, String operationRecordSerial) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         if (openid == null || openid.length() < 1) {
             return Msg.statu401();

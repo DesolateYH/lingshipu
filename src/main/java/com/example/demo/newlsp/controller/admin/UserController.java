@@ -1,12 +1,11 @@
-package com.example.demo.newlsp.controller;
+package com.example.demo.newlsp.controller.admin;
 
 import com.example.demo.html.domian.vo.Msg;
 import com.example.demo.html.repository.UserInfoDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.demo.CheckParamsInterceptor.*;
-import com.example.demo.CheckAdminInterceptor.*;
+
 
 /**
  * @program: lingshipu
@@ -28,7 +27,7 @@ public class UserController {
      * @return 1
      */
     @RequestMapping(value = "/getAllOrByShopId")
-    public Msg getAll(@ParamsNotNull @CheckAdmin String access_token,Integer shop_id){
+    public Msg getAll(  String access_token,Integer shop_id){
         if(shop_id==null) {
             return Msg.statu200().add("info", userInfoDao.findAll());
         }else {

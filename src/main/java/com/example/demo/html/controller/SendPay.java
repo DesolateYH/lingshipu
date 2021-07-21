@@ -17,7 +17,6 @@ import com.example.demo.html.repository.ItemHomePageMoreDao;
 import com.example.demo.html.repository.ShopInfoDao;
 import com.example.demo.html.repository.UserInfoDao;
 import com.example.demo.html.service.LspOrderInfoServiceImpl;
-import com.example.demo.newlsp.controller.StockController;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

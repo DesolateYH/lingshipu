@@ -1,15 +1,9 @@
-package com.example.demo;
+package com.example.demo.mid;
 
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  * @program: lingshipu
@@ -20,15 +14,15 @@ import javax.servlet.http.HttpSession;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-    CheckParamsInterceptor checkSourceInterceptor = new CheckParamsInterceptor();
-    CheckAdminInterceptor checkAdminInterceptor = new CheckAdminInterceptor();
-    //增加校验拦截器
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        // 这个地方可以定义拦截器的具体的路径
-        registry.addInterceptor(checkSourceInterceptor).addPathPatterns("/**");
-        registry.addInterceptor(checkAdminInterceptor).addPathPatterns("/**");
-    }
+//    CheckParamsInterceptor checkSourceInterceptor = new CheckParamsInterceptor();
+//    CheckAdminInterceptor checkAdminInterceptor = new CheckAdminInterceptor();
+//    //增加校验拦截器
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        // 这个地方可以定义拦截器的具体的路径
+//        registry.addInterceptor(checkSourceInterceptor).addPathPatterns("/**");
+//        registry.addInterceptor(checkAdminInterceptor).addPathPatterns("/**");
+//    }
 
 //    /**
 //     * 注册拦截器

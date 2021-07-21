@@ -1,6 +1,5 @@
-package com.example.demo.newlsp.controller;
+package com.example.demo.newlsp.controller.admin;
 
-import com.example.demo.CheckAdminInterceptor;
 import com.example.demo.html.domian.po.ItemAllModel;
 import com.example.demo.html.domian.po.ReplenishmentPO;
 import com.example.demo.html.domian.po.UserInfoModel;
@@ -12,18 +11,13 @@ import com.example.demo.newlsp.OthersServiceImpl;
 import com.example.demo.newlsp.domain.po.DeliveryVehiclePO;
 import com.example.demo.newlsp.domain.vo.DeliveryVehicleVO;
 import com.example.demo.newlsp.repository.DeliveryVehicleRepository;
-import com.sun.org.apache.regexp.internal.RE;
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.demo.CheckParamsInterceptor.*;
 
 import javax.transaction.Transactional;
-import java.beans.Transient;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -55,7 +49,7 @@ public class DeliveryVehicleController {
      * @return 1
      */
     @RequestMapping(value = "/getByAdminId")
-    public Msg getByAdminId(@ParamsNotNull String access_token) {
+    public Msg getByAdminId( String access_token) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         if (openid == null || openid.length() < 1) {
             return Msg.statu401();
@@ -77,7 +71,7 @@ public class DeliveryVehicleController {
      * @return 1
      */
     @RequestMapping(value = "/finishDeliveryVehicle")
-    public Msg finishDeliveryVehicle(@ParamsNotNull String access_token, @ParamsNotNull Integer deliveryVehicleId) {
+    public Msg finishDeliveryVehicle( String access_token,  Integer deliveryVehicleId) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         if (openid == null || openid.length() < 1) {
             return Msg.statu401();
@@ -120,7 +114,7 @@ public class DeliveryVehicleController {
      * @return 1
      */
     @RequestMapping(value = "/getAllByAdminId")
-    public Msg getAllByAdminId(@ParamsNotNull String access_token) {
+    public Msg getAllByAdminId( String access_token) {
         String openid = lspVxUserService.getOpenidByToken(access_token);
         if (openid == null || openid.length() < 1) {
             return Msg.statu401();
