@@ -97,7 +97,7 @@ public class ActivityServiceImpl {
         return strm;
     }
 
-    //获取活动详情时间安排
+    //获取活动详情时间安排 
     private List<String> getActivityPlan(String id){
         String sqlTxt = "SELECT activity_plan FROM nxb_activity_detailed WHERE id = " + id;
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
